@@ -10,6 +10,7 @@ export const CheckerBoard = styled.div`
 	background:#565656;
 	padding: 40px;
 	width: 560px;
+	min-width: 560px;
 	box-shadow:0 5px 0 #444, 0 2px 0 #373737, 0 3px 0 #555, 0 4px 0 #474747, 0 15px 0 #666, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2), 0 20px 20px rgba(0, 0, 0, 0.15);
 `;
 
