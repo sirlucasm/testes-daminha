@@ -159,20 +159,44 @@ function NormalCheckerPieces() {
 			$('.recommended-part').removeClass('recommended-part');
 			if (rightWall.includes(pieceParentId)) { // checa se a peça está do lado da parede direita
 				pieceArea = document.getElementById(pieceParentId - 9);
+				// verifica se o lado esquerdo de posições recomendadas possui uma peça adversária
+				if (pieceArea && pieceArea.children[0]?.classList.contains('secondary-piece')) {
+					pieceArea = document.getElementById(pieceParentId - 18);
+					if (pieceArea && pieceArea.children[0]?.classList.contains('secondary-piece'))
+						pieceArea = null;
+				}
 				if (pieceArea && !pieceArea.children[0]?.classList.contains('primary-piece'))
 					pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'left');
 			}
 			else if (leftWall.includes(pieceParentId)) {
 				pieceArea = document.getElementById(pieceParentId - 7);
+				// verifica se o lado direito de posições recomendadas possui uma peça adversária
+				if (pieceArea && pieceArea.children[0]?.classList.contains('secondary-piece')) {
+					pieceArea = document.getElementById(pieceParentId - 14);
+					if (pieceArea && pieceArea.children[0]?.classList.contains('secondary-piece'))
+						pieceArea = null;
+				}
 				if (pieceArea && !pieceArea.children[0]?.classList.contains('primary-piece'))
 					pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'right');
 			} else {
 				pieceArea = document.getElementById(pieceParentId - 9);
+				// verifica se o lado esquerdo de posições recomendadas possui uma peça adversária
+				if (pieceArea && pieceArea.children[0]?.classList.contains('secondary-piece')) {
+					pieceArea = document.getElementById(pieceParentId - 18);
+					if (pieceArea && pieceArea.children[0]?.classList.contains('secondary-piece'))
+						pieceArea = null;
+				}
 				if (pieceArea && !pieceArea.children[0]?.classList.contains('primary-piece')) {
 					pieceArea.classList.add('recommended-part');
 					pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'left');
 				}
 				pieceArea = document.getElementById(pieceParentId - 7);
+				// verifica se o lado direito de posições recomendadas possui uma peça adversária
+				if (pieceArea && pieceArea.children[0]?.classList.contains('secondary-piece')) {
+					pieceArea = document.getElementById(pieceParentId - 14);
+					if (pieceArea && pieceArea.children[0]?.classList.contains('secondary-piece'))
+						pieceArea = null;
+				}
 				if (pieceArea && !pieceArea.children[0]?.classList.contains('primary-piece')) {
 					pieceArea.classList.add('recommended-part');
 					pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'right');
@@ -186,20 +210,44 @@ function NormalCheckerPieces() {
 			$('.recommended-part').removeClass('recommended-part');
 			if (rightWall.includes(pieceParentId)) { // checa se a peça está do lado da parede direita
 				pieceArea = document.getElementById(pieceParentId + 7);
+				// verifica se o lado direito de posições recomendadas possui uma peça adversária
+				if (pieceArea && pieceArea.children[0]?.classList.contains('primary-piece')) {
+					pieceArea = document.getElementById(pieceParentId + 14);
+					if (pieceArea && pieceArea.children[0]?.classList.contains('primary-piece'))
+						pieceArea = null;
+				}
 				if (pieceArea && !pieceArea.children[0]?.classList.contains('secondary-piece'))
 					pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'left');
 			}
 			else if (leftWall.includes(pieceParentId)) {
 				pieceArea = document.getElementById(pieceParentId + 9);
+				// verifica se o lado direito de posições recomendadas possui uma peça adversária
+				if (pieceArea && pieceArea.children[0]?.classList.contains('primary-piece')) {
+					pieceArea = document.getElementById(pieceParentId + 18);
+					if (pieceArea && pieceArea.children[0]?.classList.contains('primary-piece'))
+						pieceArea = null;
+				}
 				if (!pieceArea.children[0]?.classList.contains('secondary-piece'))
 					pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'right');
 			} else {
 				pieceArea = document.getElementById(pieceParentId + 9);
+				// verifica se o lado direito de posições recomendadas possui uma peça adversária
+				if (pieceArea && pieceArea.children[0]?.classList.contains('primary-piece')) {
+					pieceArea = document.getElementById(pieceParentId + 18);
+					if (pieceArea && pieceArea.children[0]?.classList.contains('primary-piece'))
+						pieceArea = null;
+				}
 				if (pieceArea && !pieceArea.children[0]?.classList.contains('secondary-piece')) {
 					pieceArea.classList.add('recommended-part');
 					pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'right');
 				}
 				pieceArea = document.getElementById(pieceParentId + 7);
+				// verifica se o lado direito de posições recomendadas possui uma peça adversária
+				if (pieceArea && pieceArea.children[0]?.classList.contains('primary-piece')) {
+					pieceArea = document.getElementById(pieceParentId + 14);
+					if (pieceArea && pieceArea.children[0]?.classList.contains('primary-piece'))
+						pieceArea = null;
+				}
 				if (pieceArea && !pieceArea.children[0]?.classList.contains('secondary-piece')) {
 					pieceArea.classList.add('recommended-part');
 					pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'left');
@@ -212,18 +260,40 @@ function NormalCheckerPieces() {
 	}
 
 	const movePiece = (pieceArea, pieceToMove, position) => {
+		const parentElementId = parseInt(pieceArea?.id);
 		const div = document.createElement('div');
+		let pieceCaptured;
 		if (pieceArea.classList.contains('recommended-part')) {
 			if (pieceToMove.classList.contains('primary-piece')) {
 				pieceToMove.style.position = 'relative';
-				// check positions
-				if (position === 'right') {
-					$(pieceToMove).css('transform', `translateY(-60px) translateX(60px)`);
-				} else if (position === 'left') {
-					$(pieceToMove).css('transform', `translateY(-60px) translateX(-60px)`);
+				pieceCaptured = document.getElementById(parentElementId + 7);
+				// verifica se a posição anterior tem uma peça adversária, se sim, é pq foi uma captura de peça
+				if (pieceCaptured && pieceCaptured.children[0]?.classList.contains('secondary-piece')) {
+					// verifica posições e faz a animação de mover peça
+					if (position === 'right') {
+						$(pieceToMove).css('transform', `translateY(-120px) translateX(120px)`);
+					} else if (position === 'left') {
+						$(pieceToMove).css('transform', `translateY(-120px) translateX(-120px)`);
+					}
+					capturePiece(pieceCaptured.children[0]);
+				} else {
+					// verifica posições e faz a animação de mover peça
+					if (position === 'right') {
+						$(pieceToMove).css('transform', `translateY(-60px) translateX(60px)`);
+					} else if (position === 'left') {
+						$(pieceToMove).css('transform', `translateY(-60px) translateX(-60px)`);
+					}
 				}
-				if (pieceArea.children[0]?.classList.contains('secondary-piece'))
-					capturePiece(pieceArea.children[0])
+				pieceCaptured = document.getElementById(parentElementId + 9);
+				if (pieceCaptured && pieceCaptured.children[0]?.classList.contains('secondary-piece')) {
+					// verifica posições e faz a animação de mover peça
+					if (position === 'right') {
+						$(pieceToMove).css('transform', `translateY(-120px) translateX(120px)`);
+					} else if (position === 'left') {
+						$(pieceToMove).css('transform', `translateY(-120px) translateX(-120px)`);
+					}
+					capturePiece(pieceCaptured.children[0]);
+				}
 
 				// make the move after timeout
 				setTimeout(() => {
@@ -237,14 +307,34 @@ function NormalCheckerPieces() {
 			}
 			else if (pieceToMove.classList.contains('secondary-piece')) {
 				pieceToMove.style.position = 'relative';
-				// check positions
-				if (position === 'right') {
-					$(pieceToMove).css('transform', `translateY(60px) translateX(60px)`);
-				} else if (position === 'left') {
-					$(pieceToMove).css('transform', `translateY(60px) translateX(-60px)`);
+				pieceCaptured = document.getElementById(parentElementId - 7);
+				// verifica se a posição anterior tem uma peça adversária, se sim, é pq foi uma captura de peça
+				if (pieceCaptured && pieceCaptured.children[0]?.classList.contains('primary-piece')) {
+					// verifica posições e faz a animação de mover peça
+					if (position === 'right') {
+						$(pieceToMove).css('transform', `translateY(120px) translateX(120px)`);
+					} else if (position === 'left') {
+						$(pieceToMove).css('transform', `translateY(120px) translateX(-120px)`);
+					}
+					capturePiece(pieceCaptured.children[0])
+				} else {
+					// verifica posições e faz a animação de mover peça
+					if (position === 'right') {
+						$(pieceToMove).css('transform', `translateY(60px) translateX(60px)`);
+					} else if (position === 'left') {
+						$(pieceToMove).css('transform', `translateY(60px) translateX(-60px)`);
+					}
 				}
-				if (pieceArea.children[0]?.classList.contains('primary-piece'))
-					capturePiece(pieceArea.children[0])
+				pieceCaptured = document.getElementById(parentElementId - 9);
+				if (pieceCaptured && pieceCaptured.children[0]?.classList.contains('primary-piece')) {
+					// verifica posições e faz a animação de mover peça
+					if (position === 'right') {
+						$(pieceToMove).css('transform', `translateY(120px) translateX(120px)`);
+					} else if (position === 'left') {
+						$(pieceToMove).css('transform', `translateY(120px) translateX(-120px)`);
+					}
+					capturePiece(pieceCaptured.children[0]);
+				}
 
 				// make the move after timeout
 				setTimeout(() => {
