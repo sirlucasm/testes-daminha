@@ -19,6 +19,8 @@ function NormalCheckerPieces() {
 	const [selectedPiece, setSelectedPiece] = useState();
 	const leftWall = [0, 8, 16, 24, 32, 40, 48, 56];
 	const rightWall = [7, 15, 23, 31, 39, 47, 55, 63];
+	const primaryInitialPositions = [1, 3, 5, 7];
+	const secondaryInitialPositions = [56, 58, 60, 62];
 
 	const handleChecker = (event) => {
 		const piece = event.target;
@@ -171,57 +173,76 @@ function NormalCheckerPieces() {
 		if (!isDamaPiece(piece)) {
 			// >>>>>>  PEÇA PRIMÁRIA (PRETA)  <<<<<<
 			if (piece.classList.contains('primary-piece')) {
-				// verificar espaços no lado direito
 				pieceArea = document.getElementById(piecesPositions.primaryRightPiece);
-				if (!rightWall.includes(pieceParentId)) {
-					if (!pieceArea?.children[0]?.classList.contains('primary-piece')) { // bloqueia movimento se o espaço já está com alguma peça
+				if (pieceArea && !rightWall.includes(pieceParentId)) { // --- LADO DIREITO
+					// verificar se espaço não contém peça preta e se não contém peça vermelha
+					// caso tenha, não irá recomendar o espaço
+					if (!pieceArea?.children[0]?.classList.contains('primary-piece') && !pieceArea?.children[0]?.classList.contains('secondary-piece')) { // bloqueia movimento se o espaço já está com alguma peça
 						pieceArea.classList.add('recommended-part');
 					}
-					else if (pieceArea?.children[0]?.classList.contains('secondary-piece')) { // espaço tem peça inimiga
+					// verificar se espaço contém peça vermelha para capturar
+					if (pieceArea?.children[0]?.classList.contains('secondary-piece')) { // espaço tem peça inimiga
 						pieceArea = document.getElementById(piecesPositionsWithEnemies.primaryRightPiece);
-						pieceArea.classList.add('recommended-part');
+						// verifica se novo espaço recomendado não possui peça preta no meio nem peça vermelha
+						if (pieceArea && !pieceArea?.children[0]?.classList.contains('primary-piece') && !pieceArea?.children[0]?.classList.contains('secondary-piece'))
+							pieceArea.classList.add('recommended-part');
 					}
-					pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'right', 'primary-piece');
+					if (pieceArea) pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'right', 'primary-piece');
 				}
-				// verificar espaços no lado esquerdo
+
 				pieceArea = document.getElementById(piecesPositions.primaryLeftPiece);
-				if (!leftWall.includes(pieceParentId)) {
-					if (!pieceArea?.children[0]?.classList.contains('primary-piece')) { // bloqueia movimento se o espaço já está com alguma peça
-						pieceArea.classList.add('recommended-part');
+				if (pieceArea && !leftWall.includes(pieceParentId)) { // --- LADO ESQUERDO
+					// verificar se espaço não contém peça preta e se não contém peça vermelha
+					// caso tenha, não irá recomendar o espaço
+					if (!pieceArea?.children[0]?.classList.contains('primary-piece') && !pieceArea?.children[0]?.classList.contains('secondary-piece')) { // bloqueia movimento se o espaço já está com alguma peça
+						pieceArea?.classList.add('recommended-part');
 					}
-					else if (pieceArea?.children[0]?.classList.contains('secondary-piece')) { // espaço tem peça inimiga
+					// verificar se espaço contém peça vermelha para capturar
+					if (pieceArea?.children[0]?.classList.contains('secondary-piece')) { // espaço tem peça inimiga
 						pieceArea = document.getElementById(piecesPositionsWithEnemies.primaryLeftPiece);
-						pieceArea.classList.add('recommended-part');
+						// verifica se novo espaço recomendado não possui peça preta no meio nem peça vermelha
+						if (pieceArea && !pieceArea?.children[0]?.classList.contains('primary-piece') && !pieceArea?.children[0]?.classList.contains('secondary-piece'))
+							pieceArea.classList.add('recommended-part');
 					}
-					pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'left', 'primary-piece');
+					if (pieceArea) pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'left', 'primary-piece');
 				}
 			}
 
 			// >>>>>>  PEÇA SECUNDÁRIA (VERMELHA)  <<<<<<
 			else if (piece.classList.contains('secondary-piece')) {
-				// verificar espaços no lado direito
 				pieceArea = document.getElementById(piecesPositions.secondaryRightPiece);
-				if (!rightWall.includes(pieceParentId)) {
-					if (!pieceArea.children[0]?.classList.contains('secondary-piece')) { // bloqueia movimento se o espaço já está com alguma peça
-						pieceArea.classList.add('recommended-part');
+				if (pieceArea && !rightWall.includes(pieceParentId)) { // --- LADO DIREITO
+					// verificar se espaço não contém peça vermelha e se não contém peça preta
+					// caso tenha, não irá recomendar o espaço
+					if (!pieceArea.children[0]?.classList.contains('secondary-piece')  && !pieceArea?.children[0]?.classList.contains('primary-piece')) { // bloqueia movimento se o espaço já está com alguma peça
+						pieceArea?.classList.add('recommended-part');
 					}
-					else if (pieceArea?.children[0]?.classList.contains('primary-piece')) { // espaço tem peça inimiga
+					// verificar se espaço contém peça vermelha para capturar
+					if (pieceArea?.children[0]?.classList.contains('primary-piece')) { // espaço tem peça inimiga
 						pieceArea = document.getElementById(piecesPositionsWithEnemies.secondaryRightPiece);
-						pieceArea.classList.add('recommended-part');
+						console.log(pieceArea)
+						// verifica se novo espaço recomendado não possui peça preta no meio nem peça vermelha
+						if (pieceArea && !pieceArea?.children[0]?.classList.contains('primary-piece') && !pieceArea?.children[0]?.classList.contains('secondary-piece'))
+							pieceArea.classList.add('recommended-part');
 					}
-					pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'right', 'secondary-piece');
+					if (pieceArea) pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'right', 'secondary-piece');
 				}
-				// verificar espaços no lado esquerdo
+
 				pieceArea = document.getElementById(piecesPositions.secondaryLeftPiece);
-				if (!leftWall.includes(pieceParentId)) {
-					if (!pieceArea.children[0]?.classList.contains('secondary-piece')) { // bloqueia movimento se o espaço já está com alguma peça
+				if (pieceArea && !leftWall.includes(pieceParentId)) { // --- LADO ESQUERDO
+					// verificar se espaço não contém peça vermelha e se não contém peça preta
+					// caso tenha, não irá recomendar o espaço
+					if (!pieceArea.children[0]?.classList.contains('secondary-piece') && !pieceArea?.children[0]?.classList.contains('primary-piece')) { // bloqueia movimento se o espaço já está com alguma peça
 						pieceArea.classList.add('recommended-part');
 					}
-					else if (pieceArea?.children[0]?.classList.contains('primary-piece')) { // espaço tem peça inimiga
+					// verificar se espaço contém peça vermelha para capturar
+					if (pieceArea?.children[0]?.classList.contains('primary-piece')) { // espaço tem peça inimiga
 						pieceArea = document.getElementById(piecesPositionsWithEnemies.secondaryLeftPiece);
-						pieceArea.classList.add('recommended-part');
+						// verifica se novo espaço recomendado não possui peça preta no meio nem peça vermelha
+						if (pieceArea && !pieceArea?.children[0]?.classList.contains('primary-piece') && !pieceArea?.children[0]?.classList.contains('secondary-piece'))
+							pieceArea.classList.add('recommended-part');
 					}
-					pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'left', 'secondary-piece');
+					if (pieceArea) pieceArea.onclick = movePiece.bind(null, pieceArea, piece, 'left', 'secondary-piece');
 				}
 			}
 		}
@@ -231,40 +252,45 @@ function NormalCheckerPieces() {
 	const movePiece = (pieceArea, pieceToMove, position, piece) => {
 		const parentElementId = parseInt(pieceArea?.id);
 		const div = document.createElement('div');
-
+		let previousSpace;
 		if (pieceArea?.classList.contains('recommended-part')) {
+			// >>>>>>  PEÇA PRIMÁRIA (PRETA)  <<<<<<
 			if (piece === 'primary-piece') {
-				if (pieceArea.children > 0) { // verifica se o espaço tem peça inimiga dentro
-					// verifica posições e faz a animação de mover peça
-					if (position === 'right') {
+				// verifica posições e faz a animação de mover peça
+				if (position === 'right') {
+					previousSpace = document.getElementById(parentElementId + 7);
+					if (!previousSpace.children[0]?.classList.contains('primary-piece')) { // verifica se o espaço tem peça inimiga dentro
 						$(pieceToMove).css('transform', `translateY(-120px) translateX(120px)`);
-					} else if (position === 'left') {
+						capturePiece(previousSpace.children[0]);
+					}
+					else $(pieceToMove).css('transform', `translateY(-60px) translateX(60px)`);
+				} else if (position === 'left') {
+					previousSpace = document.getElementById(parentElementId + 9);
+					if (!previousSpace.children[0]?.classList.contains('primary-piece')) { // verifica se o espaço tem peça inimiga dentro
 						$(pieceToMove).css('transform', `translateY(-120px) translateX(-120px)`);
+						capturePiece(previousSpace.children[0]);
 					}
-				} else {
-					// verifica posições e faz a animação de mover peça
-					if (position === 'right') {
-						$(pieceToMove).css('transform', `translateY(-60px) translateX(60px)`);
-					} else if (position === 'left') {
-						$(pieceToMove).css('transform', `translateY(-60px) translateX(-60px)`);
-					}
+					else $(pieceToMove).css('transform', `translateY(-60px) translateX(-60px)`);
 				}
 			}
+
+			// >>>>>>  PEÇA SECUNDÁRIA (VERMELHA)  <<<<<<
 			else if (piece === 'secondary-piece') {
-				if (pieceArea.children > 0) { // verifica se o espaço tem peça inimiga dentro
-					// verifica posições e faz a animação de mover peça
-					if (position === 'right') {
+				// verifica posições e faz a animação de mover peça
+				if (position === 'right') {
+					previousSpace = document.getElementById(parentElementId - 9);
+					if (!previousSpace.children[0]?.classList.contains('secondary-piece')) { // verifica se o espaço tem peça inimiga dentro
 						$(pieceToMove).css('transform', `translateY(120px) translateX(120px)`);
-					} else if (position === 'left') {
+						capturePiece(previousSpace.children[0]);
+					}
+					else $(pieceToMove).css('transform', `translateY(60px) translateX(60px)`);
+				} else if (position === 'left') {
+					previousSpace = document.getElementById(parentElementId - 7);
+					if (!previousSpace.children[0]?.classList.contains('secondary-piece')) { // verifica se o espaço tem peça inimiga dentro
 						$(pieceToMove).css('transform', `translateY(120px) translateX(-120px)`);
+						capturePiece(previousSpace.children[0]);
 					}
-				} else {
-					// verifica posições e faz a animação de mover peça
-					if (position === 'right') {
-						$(pieceToMove).css('transform', `translateY(60px) translateX(60px)`);
-					} else if (position === 'left') {
-						$(pieceToMove).css('transform', `translateY(60px) translateX(-60px)`);
-					}
+					else $(pieceToMove).css('transform', `translateY(60px) translateX(-60px)`);
 				}
 			}
 
@@ -286,12 +312,11 @@ function NormalCheckerPieces() {
 
 	const setDamaPiece = (piece) => {
 		const pieceParentId = parseInt(piece.parentElement.id);
-		const primaryPositions = [1, 3, 5, 7];
-		const secondaryPositions = [56, 58, 60, 62];
-		if (primaryPositions.includes(pieceParentId)) {
+		
+		if (primaryInitialPositions.includes(pieceParentId)) {
 			piece.classList.add('dama-piece');
 		}
-		if (secondaryPositions.includes(pieceParentId)) {
+		if (secondaryInitialPositions.includes(pieceParentId)) {
 			piece.classList.add('dama-piece');
 		}
 	}
