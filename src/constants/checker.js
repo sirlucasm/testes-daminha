@@ -1,3 +1,7 @@
+export const CHECKER_WIDTH = 480;
+export const CHECKER_HEIGHT = 480;
+export const CHECKER_SQUARE = 60;
+
 export const CHECKER_TOTAL_SIMPLE = 36;
 export const CHECKER_DIMENSION_SIMPLE = 6;
 
